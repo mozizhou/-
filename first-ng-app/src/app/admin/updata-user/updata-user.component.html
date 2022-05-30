@@ -1,0 +1,133 @@
+<!-- main app container -->
+<p-card header="Updata User">
+  <div class="card-body">
+    <form [formGroup]="updataForm" (ngSubmit)="onSubmit(updataForm)">
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12 p-md-5">
+          <label for="username" (click)="onClick(f.username)">Username</label>
+          <input
+            id="username"
+            type="text"
+            [value]="f.username.value"
+            formControlName="username"
+            pInputText
+          >
+          <small *ngIf="f.username.dirty && f.username.errors" class="p-error">
+            <div *ngIf="f.username.errors.required">
+              Username is required
+            </div>
+          </small>
+        </div>
+        <div class="p-field p-col-12 p-md-5">
+          <label>Name</label>
+          <input
+            id="name"
+            type="text"
+            [value]="f.name.value"
+            formControlName="name"
+            pInputText
+          />
+          <small *ngIf="f.name.dirty && f.name.errors" class="p-error">
+            <div *ngIf="f.name.errors.required">Name is required</div>
+          </small>
+        </div>
+        <div class="p-field p-col-12 p-md-2">
+          <label>Gender</label>
+          <p-dropdown [options]="genderOpts"
+                      optionLabel="label"
+                      optionValue="value"
+                      id="gender"
+                      formControlName="gender"
+                      [filterValue]="f.gender.value"
+          ></p-dropdown>
+          <small *ngIf="f.gender.dirty && f.gender.errors" class="p-error">
+            <div *ngIf="f.gender.errors.required">Gender is required</div>
+          </small>
+        </div>
+        <div class="p-field p-col-12 p-md-6">
+          <label>Phone Number</label>
+          <p-inputMask
+            mask="999-9999-9999"
+            [unmask]="true"
+            formControlName="phoneNum">
+          </p-inputMask>
+          <small *ngIf="f.phoneNum.dirty && f.phoneNum.errors" class="p-error">
+            <div *ngIf="f.phoneNum.errors.required">Phone number is required</div>
+            <!--            <div *ngIf="f.phoneNum.errors.email">-->
+            <!--              Email must be a valid email address-->
+            <!--            </div>-->
+          </small>
+        </div>
+        <div class="p-field p-col-12 p-md-6">
+          <label>Birthday</label>
+          <p-calendar formControlName="birthday">
+          <small *ngIf="f.birthday.dirty && f.birthday.errors" class="p-error">
+            <div *ngIf="f.birthday.errors.required">Birthday is required</div>
+            <!--            <div *ngIf="f.birthday.errors.min || f.birthday.errors.max">-->
+            <!--              Age must be a number between 0 and 150-->
+            <!--            </div>-->
+          </small>
+          </p-calendar>
+        </div>
+        <div class="p-field p-col-12">
+          <label>Home Address</label>
+          <input
+            id="homeAddress"
+            type="text"
+            pInputText
+            [value]="f.homeAddress.value"
+            formControlName="homeAddress"
+          />
+          <small *ngIf="f.homeAddress.dirty && f.homeAddress.errors" class="p-error">
+            <div *ngIf="f.homeAddress.errors.required">Home Address is required</div>
+            <!--            <div *ngIf="f.phoneNum.errors.email">-->
+            <!--              Email must be a valid email address-->
+            <!--            </div>-->
+          </small>
+        </div>
+        <button pButton class="p-button-secondary" (click)="onChange()" *ngIf="!hidebutton">ChangePassword</button>
+        <div class="p-field p-col-12 p-md-6" *ngIf="passchange">
+          <label>Password</label>
+          <input
+            id="password"
+            type="password"
+            [value]="f.password.value"
+            pInputText
+          />
+          <small *ngIf="f.password.dirty && f.password.errors" class="p-error">
+            <div *ngIf="f.password.errors.required">
+              Password is required
+            </div>
+            <div *ngIf="f.password.errors.minlength">
+              Password must be at least 6 characters
+            </div>
+          </small>
+        </div>
+        <div class="p-field p-col-12 p-md-6" *ngIf="passchange">
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            pInputText
+          />
+          <small
+            *ngIf="f.confirmPassword.dirty && f.confirmPassword.errors"
+            class="p-error"
+          >
+            <div *ngIf="f.confirmPassword.errors.required">
+              Confirm Password is required
+            </div>
+            <div *ngIf="f.confirmPassword.errors.mustMatch">
+              Passwords must match
+            </div>
+          </small>
+        </div>
+      </div>
+      <div class="p-d-flex p-jc-center">
+        <button pButton type="submit" class="p-mr-2">Updata</button>
+        <button pButton type="reset" class="p-button-secondary" (click)="onReset()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</p-card>
