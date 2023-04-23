@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {MenuItem} from "primeng/api";
 import {UserApiService} from "./core/api/user-api.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -11,35 +12,35 @@ export class AppComponent {
   title = 'first-ng-app';
   menuItems: MenuItem[] = [
     {
-      label: 'Home',
-      routerLink: 'admin',
+      label:'主页',
+      icon:'pi pi-fw pi-home',
+      routerLink: 'homepage',
     },
     {
-      label: 'Users',
-      routerLink: 'admin/users'
+      label:'贴吧',
+      icon:'pi pi-fw pi-whatsapp',
+      routerLink: 'stick',
+    }, {
+      label:'饮食健康',
+      icon:'pi pi-fw pi-box',
+    },{
+      label:'精选菜谱',
+      icon:'pi pi-fw pi-user',
+      routerLink: 'food/menu',
     },
     {
-      label: 'Add User',
-      routerLink: 'admin/user/new'
-    },
-    {
-      label: 'Login',
-      routerLink: 'auth'
-    },
-    {
-      label: 'Logout',
+      label:'注銷',
+      icon:'pi pi-fw pi-power-off',
       command: () => {
-        this._userApiService.logout().subscribe({
-          error: () => {
-            alert("Logout Sucessful");
-            console.log("User Logout!!! (in pull-request branch)")
-          }
-        });
+        localStorage.removeItem('USER');
+        alert("Logout Sucessful");
+        this._router.navigate(['/auth'])
       }
     }
   ];
 
-  constructor(private readonly _userApiService: UserApiService) {
+  constructor(private readonly _userApiService: UserApiService,
+              private readonly _router: Router) {
   }
 
 }

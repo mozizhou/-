@@ -1,0 +1,50 @@
+<div class="p-d-flex p-jc-center">
+  <div class="p-col-8" style=" border:1px solid darkgray ;border-radius :25px;">
+    <p-scrollPanel [style]="{width: '100%'}" >
+      <div class="p-col-3" >
+        <div class="p-d-flex">
+          <h2>
+            {{post.title}}
+          </h2>
+          <h4>
+            {{post.userId}}
+          </h4>
+
+        </div>
+        <i class="pi pi-clock"></i>
+        {{post.createTime}}
+        <i class="pi pi-eye"></i>
+        {{post.commentCount}}
+      </div>
+      <hr>
+      <!--  <p-divider layout="vertical"  style="color: #eb2711"></p-divider>-->
+      <div class="p-col-8">
+        <p-scrollPanel [style]="{width: '150%'}" styleClass="custombar1">
+          <p>
+            {{post.content}}
+          </p>
+        </p-scrollPanel>
+        <!--    <p-divider layout="vertical" style="color: #eb2711" ></p-divider>-->
+
+      </div>  </p-scrollPanel>  <hr>
+
+<!--    &lt;!&ndash;  评论&ndash;&gt;-->
+<!--    <app-comment-list [msg]="msg"></app-comment-list>-->
+<!--    &lt;!&ndash;  评论编写&ndash;&gt;-->
+<!--    <app-add-comment [msg]="msg"></app-add-comment>-->
+    <button pButton pRipple type="button" label="评论" class="p-button-rounded" (click)="display()"></button>
+    <div *ngFor="let comment of commentList">
+      <p-panel header="{{comment.userId}}" [toggleable]="true" >
+        {{comment.content}}
+        <li style="color: #aaaaaa">{{comment.commentTime}}</li>
+      </p-panel>
+    </div>
+  </div>
+</div>
+
+<p-dialog [(visible)]="addCommentDisplay"  header="发布" [modal]="true">
+  <p-card header="评论"  [formGroup]="commentForm" class="p-grid">
+    <textarea rows="5" cols="100" id="content" placeholder="content" pInputTextarea class="p-col-12" formControlName="content"></textarea>
+    <p-button  icon="pi pi-check" class="p-col-12" (click)="addComment()" label="申请"></p-button>
+  </p-card>
+</p-dialog>

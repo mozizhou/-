@@ -1,0 +1,125 @@
+<p-toast></p-toast>
+
+<div class="card">
+  <p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="新建" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+      <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="p-mr-2 p-d-inline-block"></p-fileUpload>
+      <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="products" [rows]="10" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']"
+           [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+    <ng-template pTemplate="caption">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        <h5 class="p-m-0">食品管理</h5>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="name">姓名 <p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+        <th pSortableColumn="category">分类 <p-sortIcon field="category"></p-sortIcon></th>
+        <th pSortableColumn="rating">评价 <p-sortIcon field="rating"></p-sortIcon></th>
+        <th pSortableColumn="inventoryStatus">状态 <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="product"></p-tableCheckbox>
+        </td>
+        <td>{{product.name}}</td>
+        <td>{{product.price | currency:'USD'}}</td>
+        <td>{{product.category}}</td>
+        <td><p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating></td>
+        <td><span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span></td>
+        <td>
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editProduct(product)"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+          <button pButton pRipple icon="pi pi-check" class="p-button-text" (click)="addDailogDisplay(product)"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        总共拥有 {{products ? products.length : 0 }} 个.
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="详情" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="p-field">
+      <label for="name">姓名</label>
+      <input type="text" pInputText id="name" [(ngModel)]="product.name" required autofocus />
+      <small class="p-invalid" *ngIf="submitted && !product.name">姓名不为空.</small>
+    </div>
+    <div class="p-field">
+      <label for="description">详情</label>
+      <textarea id="description" pInputTextarea [(ngModel)]="product.description" required rows="3" cols="20"></textarea>
+    </div>
+
+    <div class="p-field">
+      <label class="p-mb-3">分类</label>
+      <div class="p-formgrid p-grid">
+        <div class="p-field-radiobutton p-col-6">
+          <p-radioButton id="category1" name="category" value="Accessories" [(ngModel)]="product.category"></p-radioButton>
+          <label for="category1">主食</label>
+        </div>
+        <div class="p-field-radiobutton p-col-6">
+          <p-radioButton id="category2" name="category" value="Clothing" [(ngModel)]="product.category"></p-radioButton>
+          <label for="category2">零食</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-formgrid p-grid">
+      <div class="p-field p-col">
+        <label for="price">Price</label>
+        <p-inputNumber id="price" [(ngModel)]="product.price" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+      </div>
+      <div class="p-field p-col">
+        <label for="quantity">Quantity</label>
+        <p-inputNumber id="quantity" [(ngModel)]="product.quantity"></p-inputNumber>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+  </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="addDialog" [style]="{width: '450px', height: '500px'}" header="详情" [modal]="true" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="p-field">
+      <div class="field col-12 md:col-4">
+        <label>日期</label>
+        <p-calendar inputId="basic" style="z-index: 2" [(ngModel)]="date"></p-calendar>
+      </div>
+    </div>
+    <div class="p-field">
+      <label for="description">详情</label>
+      <p-dropdown [options]="options" [(ngModel)]="selected" placeholder="选择时间" optionLabel="name" optionValue="code" [showClear]="true"></p-dropdown>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="addToCalender(product.id)"></button>
+  </ng-template>
+</p-dialog>
+
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

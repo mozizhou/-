@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.course.mapper.PostMapper">
+    <sql id="Base_Column_List">
+        id, username, "password", "name", gender, is_admin, birthday, phone_num, home_address
+    </sql>
+    <sql id="insertFields">
+        user_id, title, content, type, create_time, comment_count
+    </sql>
+    <sql id="insertCommentFields">
+        post_id, user_id, content, comment_time
+    </sql>
+  <resultMap id="All_DiscussPost" type="com.course.mapper.dao.DiscussPostModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="type" jdbcType="BIGINT" property="type"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="comment_count" jdbcType="BIGINT" property="commentCount"/>
+    </resultMap>
+    <resultMap id="All_Comment" type="com.course.mapper.dao.CommentModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="post_id" jdbcType="BIGINT" property="postId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="comment_time" jdbcType="TIMESTAMP" property="commentTime"/>
+    </resultMap>
+    <insert id="insertDiscussPost" parameterType="com.course.mapper.dao.DiscussPostModel">
+        insert into user_access.post(<include refid="insertFields"></include>)
+        values(#{userId},#{title},#{content},#{type},current_timestamp,#{commentCount})
+    </insert>
+    <select id="selectAllDiscussPost" resultMap="All_DiscussPost">
+        select
+        *
+        from user_access.post
+    </select>
+    <select id="selectDiscussPost" resultMap="All_DiscussPost">
+        select
+            *
+        from user_access.post
+        where id = #{postId}
+    </select>
+  <update id="updateCommentCount">
+       update user_access.post
+    <set>
+      comment_count = user_access.post.comment_count+1,
+    </set>
+    where id = #{postId,jdbcType=BIGINT}
+  </update>
+    <insert id="insertComment" parameterType="com.course.mapper.dao.CommentModel">
+        insert into user_access.comment(<include refid="insertCommentFields"></include>)
+        values(#{postId},#{userId},#{content},current_timestamp)
+    </insert>
+    <select id="selectCommentByPostId" resultMap="All_Comment">
+        select
+            *
+        from user_access.comment
+        where post_id = #{postId}
+    </select>
+</mapper>

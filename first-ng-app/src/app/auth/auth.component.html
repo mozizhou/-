@@ -1,20 +1,23 @@
-<div class="p-grid p-jc-center">
-  <p-card class="p-col-12 p-md-4" header="Login">
+<div class="p-grid p-jc-center" style="display:flex; align-items:center;position : absolute; width: 100%; height: 100%">
+  <p-card class="p-col-12 p-md-4" header="登录">
     <div class="card-body">
       <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <div class="p-fluid">
           <p-messages [(value)]="msgs"></p-messages>
           <div class="p-field">
-            <label for="username">Username</label>
+            <label for="username">用户名</label>
             <input id="username" formControlName="username" type="text" pInputText>
           </div>
           <div class="p-field">
-            <label for="password">Password</label>
+            <label for="password">密码</label>
             <input id="password" formControlName="password" type="password" pInputText>
           </div>
         </div>
-        <div class="p-d-flex p-jc-center">
-          <button pButton type="submit" class="p-mr-2">Login</button>
+        <div class="p-d-flex p-col-12 p-md-12">
+          <div class="p-col-2"></div>
+          <button pButton type="submit" class="p-col-3" label="登录"></button>
+          <div class="p-col-2"></div>
+          <button pButton type="submit" class="p-col-3" label="注册"></button>
         </div>
       </form>
     </div>

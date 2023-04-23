@@ -1,0 +1,72 @@
+<div class="p-d-flex">
+  <div class="p-grid p-jc-center">
+    <div class="p-col-12">
+      <div class="p-grid p-jc-center">
+        <div class="con_img">
+          <img class="image" src="{{img}}" id="scenic_img" (click)="getData(img)" style="height: 500px;width:800px">
+          <span class="ms">{{text}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="p-col-8">
+      <p-fieldset legend="帖子">
+        <div *ngFor="let post of postList">
+          <p-panel header="{{post.title}}" [toggleable]="true" [collapsed]="true">
+            <ng-template pTemplate="icons">
+              <button pButton class="p-panel-header-icon p-link" (click)="menu.toggle($event)">
+                <span class="pi pi-cog"></span>
+              </button>
+              <p-menu #menu id="config_menu" [model]="items" [popup]="true"></p-menu>
+            </ng-template>
+            <div (click)="viewDetail(post.id)">
+              {{post.content}}
+            </div>
+          </p-panel>
+          <h6>  </h6>
+        </div>
+      </p-fieldset>
+    </div>
+  </div>
+</div>
+  <div class="p-d-flex">
+    <div class="p-col-9"></div>
+    <div class="p-col-3">
+      <div class="p-grid ">
+        <p-button (click)="showModalDialog()" icon="pi pi-plus" label="编辑新帖子" ></p-button>
+        <p-dialog header="编辑新帖子" [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}"
+                  [draggable]="false" [resizable]="false" [formGroup]="post">
+          <h4 for="title" style="margin-left: 120px;">标题：</h4>
+          <input id="float-input"  style="margin-left: 100px;" type="text" pInputText formControlName="title">
+          <small *ngIf="f.title.dirty && f.title.errors" class="p-error">
+            <div *ngIf="f.title.errors.required">需要标题</div>
+          </small>
+          <h4 for="content"style="margin-left: 120px;">内容：</h4>
+          <textarea rows="5" cols="150" id="content" placeholder="content" style="margin-left: 100px;font-size:18px;width: 400px;height: 200px" pInputTextarea  formControlName="content"></textarea>
+          <small *ngIf="f.content.dirty && f.content.errors" class="p-error">
+            <div *ngIf="f.content.errors.required">需要内容</div>
+          </small>
+          <h4 for="type"style="margin-left: 120px;" placeholder="type">类型：</h4>
+          <div class="row"  style="margin-left: 100px;">
+            <label class="md-check">
+              <input type="radio" value="1" name="type" formControlName="type">
+              健身建议
+            </label>
+
+            <label class="md-check">
+              <input type="radio" value="2" name="type" formControlName="type">
+              食品推荐
+            </label>
+
+            <label class="md-check">
+              <input type="radio" value="3" name="type" formControlName="type">
+              综合规划
+            </label>
+          </div>
+          <ng-template pTemplate="footer">
+            <p-button icon="pi pi-check" (click)="addPost()" label="发布" styleClass="p-button-text"></p-button>
+          </ng-template>
+        </p-dialog>
+      </div>
+    </div>
+  </div>
+

@@ -1,0 +1,10 @@
+<p-sidebar [(visible)]="visibleSidebar" [baseZIndex]="10000">
+  <h3>个人中心</h3>
+  <p-panelMenu [model]="items" [style]="{'width':'100%'}"></p-panelMenu>
+</p-sidebar>
+<p-button type="button" class="mr-2" (click)="visibleSidebar = true" icon="pi pi-arrow-right"></p-button>
+<div *ngIf="visibleViewUser">
+  <app-edit-user></app-edit-user>
+</div>
+<app-calender [schedules]=schedules *ngIf="display"></app-calender>
+<app-concern *ngIf="displayConcern"></app-concern>

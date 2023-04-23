@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "id": "1000",
+      "code": "f230fh0g3",
+      "name": "主食1",
+      "description": "Product Description",
+      "image": "https://cp1.douguo.com/upload/caiku/1/5/4/690x390_153f81559df4204d33293dac0c1f27d4.jpeg",
+      "price": 65,
+      "category": "主食",
+      "quantity": 24,
+      "inventoryStatus": "热门",
+      "rating": 5
+    },
+    {
+      "id": "1001",
+      "code": "nvklal433",
+      "name": "主食2",
+      "description": "Product Description",
+      "image": "https://img.zcool.cn/community/0135a85e216cfda80120a89530a4d1.jpg@1280w_1l_2o_100sh.jpg",
+      "price": 72,
+      "category": "主食",
+      "quantity": 61,
+      "inventoryStatus": "一般",
+      "rating": 4
+    },
+    {
+      "id": "1002",
+      "code": "zz21cz3c1",
+      "name": "零食1",
+      "description": "Product Description",
+      "image": "https://img.zcool.cn/community/0114ec5e216cfaa80121651800d86b.jpg@1280w_1l_2o_100sh.jpg",
+      "price": 79,
+      "category": "零食",
+      "quantity": 2,
+      "inventoryStatus": "一般",
+      "rating": 3
+    }
+    ]
+}

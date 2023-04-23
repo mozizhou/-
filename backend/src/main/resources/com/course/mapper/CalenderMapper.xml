@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.course.mapper.CalenderMapper">
+    <resultMap id="BaseResultMap" type="com.course.mapper.dao.CalenderModel">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="userId" jdbcType="BIGINT" property="userId"/>
+        <result column="schedule_date" jdbcType="VARCHAR" property="date"/>
+        <result column="food_morning" jdbcType="BIGINT" property="foodMorning"/>
+        <result column="sign_morning" jdbcType="BIGINT" property="signMorning"/>
+        <result column="food_noon" jdbcType="BIGINT" property="foodNoon"/>
+        <result column="sign_noon" jdbcType="BIGINT" property="signNoon"/>
+        <result column="food_afternoon" jdbcType="BIGINT" property="foodAfternoon"/>
+        <result column="sign_afternoon" jdbcType="BIGINT" property="signAfternoon"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, userId, schedule_date, "food_morning", "sign_morning", food_noon, sign_noon, food_afternoon, sign_afternoon, fix
+    </sql>
+    <select id="getSchedules" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_access."schedule"
+        where userId = #{id,jdbcType=BIGINT}
+    </select>
+<!--    <update id="SingIn">-->
+<!--        update user_access."schedule" set-->
+<!--        <if test="server_morning==userId"></if>-->
+<!--    </update>-->
+    <select id="selectCalender" resultType="java.lang.Long">
+        select
+       <if test="timeName == 'food_morning'">
+           food_morning
+       </if>
+        <if test="timeName == 'food_noon'">
+            food_morning
+        </if>
+        <if test="timeName == 'food_afternoon'">
+            food_morning
+        </if>
+        from user_access."schedule"
+        where userId = #{userId,jdbcType=BIGINT} and schedule_date = #{date ,jdbcType=VARCHAR}
+    </select>
+    <select id="selectCalenderByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"></include>
+        from user_access."schedule"
+        where userId = #{userId,jdbcType=BIGINT} and schedule_date = #{date ,jdbcType=VARCHAR}
+    </select>
+    <update id="updateToCalender">
+        update user_access."schedule"
+        <set>
+            <if test="timeName == 'food_morning'">
+                food_morning = #{menuId,jdbcType=BIGINT},
+            </if>
+            <if test="timeName == 'food_noon'">
+                food_noon = #{menuId,jdbcType=BIGINT},
+            </if>
+            <if test="timeName == 'food_afternoon'">
+                food_afternoon = #{menuId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where userId = #{userId,jdbcType=BIGINT} and schedule_date = #{date ,jdbcType=VARCHAR}
+    </update>
+    <insert id="addToCalender">
+        insert into user_access."schedule"
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                userid,
+            </if>
+            <if test="date != null">
+                schedule_date,
+            </if>
+            <if test="timeName == 'food_morning'">
+                food_morning,
+            </if>
+            <if test="timeName == 'food_noon'">
+                food_noon,
+            </if>
+            <if test="timeName == 'food_afternoon'">
+                food_afternoon,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId, jdbcType=BIGINT},
+            </if>
+            <if test="date != null">
+                #{date , jdbcType=VARCHAR},
+            </if>
+            <if test="timeName == 'food_morning'">
+                #{menuId, jdbcType=BIGINT},
+            </if>
+            <if test="timeName == 'food_noon'">
+                #{menuId, jdbcType=BIGINT},
+            </if>
+            <if test="timeName == 'food_afternoon'">
+                #{menuId, jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+</mapper>
+
